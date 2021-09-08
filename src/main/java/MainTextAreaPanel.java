@@ -17,7 +17,7 @@ public class MainTextAreaPanel extends JPanel {
     MainTextAreaPanel(){
         scrollContent = new JPanel();
         mainTextArea = new JTextPane();
-        label = new JLabel("<html>lol <br> lol");
+        label = new JLabel(" ");
         scrollContent.setLayout(new BoxLayout(scrollContent, BoxLayout.LINE_AXIS));
         scrollContent.add(label);
         scrollContent.add(mainTextArea);
@@ -33,7 +33,7 @@ public class MainTextAreaPanel extends JPanel {
         label.setBorder(new CompoundBorder(label.getBorder(), margin));
 
         mainTextArea.setBackground(Color.decode("#262626"));
-
+        mainTextArea.setBorder(BorderFactory.createEmptyBorder());
         mainTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -65,8 +65,10 @@ public class MainTextAreaPanel extends JPanel {
         });
 
         mainTextAreaScroll = new JScrollPane(scrollContent);
-        this.add(mainTextAreaScroll);
-        mainTextArea.setSize(200,200);
+        mainTextAreaScroll.setBorder(BorderFactory.createEmptyBorder());
+        this.setLayout(new BorderLayout());
+        this.add(mainTextAreaScroll,BorderLayout.CENTER);
+        System.out.println(mainTextAreaScroll.getWidth());
         this.setVisible(true);
     }
 }
