@@ -9,8 +9,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Random;
 
 public class MainWindow extends JFrame {
@@ -26,30 +31,30 @@ public class MainWindow extends JFrame {
         this.setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
 
 
-        JPanel topBar = new JPanel();
-        topBar.setBackground(Color.decode("#303030"));
-      //  topBar.setMinimumSize(new Dimension(20,30));
-        topBar.setMaximumSize(new Dimension(10000,30));
-        topBar.setLayout(new BoxLayout(topBar,BoxLayout.X_AXIS));
-        topBar.add(Box.createHorizontalGlue());
-        IconButton button = new IconButton(null);
-
-        button.setMaximumSize(new Dimension(30,40));
-        try {
-            BufferedImage icon = ImageIO.read(this.getClass().getResource("icons/run.png"));
-            button.setIconButton(icon);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        topBar.setBorder(BorderFactory.createEmptyBorder());
-        topBar.add(button,BorderLayout.CENTER);
-        this.add(topBar);
-
         MainTextAreaPanel mainTextAreaPanel = new MainTextAreaPanel();
         mainTextAreaPanel.setVisible(true);
-        mainTextAreaPanel.setMaximumSize(new Dimension(1000000,this.getHeight() - topBar.getHeight() ));
         mainTextAreaPanel.setBackground(Color.BLACK);
         mainTextAreaPanel.setBorder(BorderFactory.createMatteBorder(2,0,0,0,Color.decode("#212121")));
+
+        TopBar topBar = new TopBar(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    File destination = new File("C:/tmp.tex");
+                    PrintWriter printWriter = new PrintWriter(destination);
+                    printWriter.print(mainTextAreaPanel.mainTextArea.getText());
+                    printWriter.flush();
+                    printWriter.close();
+                    TexCompiler.startBuild(destination.getAbsolutePath().replaceAll("\\\\","/"));
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        mainTextAreaPanel.setMaximumSize(new Dimension(1000000,this.getHeight() - topBar.getHeight() ));
+
+        this.add(topBar);
         this.add(mainTextAreaPanel);
 
         this.setVisible(true);
