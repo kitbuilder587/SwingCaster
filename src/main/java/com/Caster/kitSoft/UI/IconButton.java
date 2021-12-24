@@ -1,3 +1,5 @@
+package com.Caster.kitSoft.UI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;

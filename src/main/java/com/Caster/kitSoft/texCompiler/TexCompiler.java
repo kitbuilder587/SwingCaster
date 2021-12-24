@@ -1,3 +1,5 @@
+package com.Caster.kitSoft.texCompiler;
+
 import java.io.*;
 import java.util.Scanner;
 

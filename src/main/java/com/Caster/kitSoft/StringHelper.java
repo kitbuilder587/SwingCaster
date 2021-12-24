@@ -1,3 +1,5 @@
+package com.Caster.kitSoft;
+
 public class StringHelper {
     public static String getStringFrom1ToN(int n){
         StringBuilder res = new StringBuilder("<html>");
